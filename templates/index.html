@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calorie Burn Prediction</title>
+    <style>
+      :root {
+        --primary: #28a745;
+        --primary-hover: #218838;
+        --background: #f4f4f4;
+        --card-bg: #ffffff;
+        --text: #333333;
+        --text-light: #666666;
+        --border: #cccccc;
+        --input-bg: #f9f9f9;
+        --prediction-bg: #e9ecef;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        color: var(--text);
+        background-color: var(--background);
+        padding: 20px;
+      }
+
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+      }
+
+      h1 {
+        color: var(--text);
+        margin-bottom: 20px;
+        text-align: center;
+      }
+
+      form {
+        background: var(--card-bg);
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+      }
+
+      .form-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 15px;
+      }
+
+      @media (min-width: 600px) {
+        .form-grid {
+          grid-template-columns: repeat(2, 1fr);
+          gap: 20px;
+        }
+
+        .full-width {
+          grid-column: span 2;
+        }
+      }
+
+      .form-group {
+        margin-bottom: 5px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: bold;
+        color: var(--text);
+      }
+
+      input,
+      select {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        background-color: var(--input-bg);
+        font-size: 16px;
+        transition: border-color 0.3s, box-shadow 0.3s;
+      }
+
+      input:focus,
+      select:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.25);
+      }
+
+      input[type="submit"] {
+        background: var(--primary);
+        color: white;
+        border: none;
+        padding: 14px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        border-radius: 4px;
+        transition: background-color 0.3s;
+        width: 100%;
+        margin-top: 10px;
+      }
+
+      input[type="submit"]:hover {
+        background: var(--primary-hover);
+      }
+
+      .prediction {
+        margin-top: 20px;
+        padding: 20px;
+        background: var(--prediction-bg);
+        border-radius: 8px;
+        border-left: 4px solid var(--primary);
+        font-size: 18px;
+        font-weight: bold;
+      }
+
+      .input-with-unit {
+        position: relative;
+      }
+
+      .unit {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-light);
+        pointer-events: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Calorie Burn Prediction</h1>
+
+      <form method="POST" action="/predict">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="Age">Age (years):</label>
+            <div class="input-with-unit">
+              <input
+                type="number"
+                id="Age"
+                name="Age"
+                step="1"
+                min="1"
+                max="120"
+                required
+              />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="Height">Height (cm):</label>
+            <div class="input-with-unit">
+              <input
+                type="number"
+                id="Height"
+                name="Height"
+                step="0.1"
+                min="50"
+                max="250"
+                required
+              />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="Weight">Weight (kg):</label>
+            <div class="input-with-unit">
+              <input
+                type="number"
+                id="Weight"
+                name="Weight"
+                step="0.1"
+                min="20"
+                max="300"
+                required
+              />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="Duration">Duration (minutes):</label>
+            <div class="input-with-unit">
+              <input
+                type="number"
+                id="Duration"
+                name="Duration"
+                step="0.1"
+                min="1"
+                required
+              />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="Heart_Rate">Heart Rate (bpm):</label>
+            <div class="input-with-unit">
+              <input
+                type="number"
+                id="Heart_Rate"
+                name="Heart_Rate"
+                step="1"
+                min="40"
+                max="220"
+                required
+              />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="Body_Temp">Body Temperature (°C):</label>
+            <div class="input-with-unit">
+              <input
+                type="number"
+                id="Body_Temp"
+                name="Body_Temp"
+                step="0.1"
+                min="35"
+                max="42"
+                required
+              />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="Sex">Sex:</label>
+            <select id="Sex" name="Sex" required>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+            </select>
+          </div>
+
+          <div class="form-group full-width">
+            <input type="submit" value="Predict" />
+          </div>
+        </div>
+      </form>
+
+      {% if prediction %}
+      <div class="prediction">
+        <p>{{ prediction }}</p>
+      </div>
+      {% endif %}
+    </div>
+  </body>
+</html>
